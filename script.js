@@ -19,13 +19,10 @@ window.addEventListener("load", function() {
     submitForm.addEventListener("submit", function(event) {
         const pilot = document.getElementById("pilotName").value;
         const copilot = document.querySelector("input[name=copilotName]").value;
-        // document.getElementById("copilotName").value;
         const fuelLevel = document.querySelector("input[name=fuelLevel]").value;
-        // document.getElementById("fuelLevel").value;
         const cargoMass = document.querySelector("input[name=cargoMass]").value;
-        // document.getElementById("cargoMass").value;
         
-        formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass, event);
-        // event.preventDefault();
+        formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass);
+        event.preventDefault();
     });
 });

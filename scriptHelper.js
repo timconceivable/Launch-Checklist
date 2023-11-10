@@ -36,8 +36,8 @@ function validateInput(testInput) {
     }
 }
 
-function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel, event) {
-    event.preventDefault();
+function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
+    // event.preventDefault();
     const launchStatusDiv = document.getElementById('launchStatus');
     const pilotStatus = document.getElementById("pilotStatus");
     const copilotStatus = document.getElementById("copilotStatus");
@@ -46,47 +46,54 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel, e
     let readyToLaunch = true;
 
     // INPUT VALIDATION
+    if (validateInput(pilot) === "Empty" || validateInput(copilot) === "Empty" || validateInput(fuelLevel) === "Empty" || validateInput(cargoLevel) === "Empty") {
+        alert("All fields are required.");
+        readyToLaunch = false;
+    }
+    
     if (validateInput(pilot) === "Empty" || validateInput(pilot) === "Is a Number") {
-        alert("Pilot name is missing or invalid.");
-        pilotStatus.innerHTML = `Pilot is missing`;
+        // alert("Pilot name is missing or invalid.");
+        pilotStatus.innerHTML = `Please enter a valid name for pilot.`;
         readyToLaunch = false;
     } else { 
         pilotStatus.innerText = `Pilot ${pilot} is ready for launch`; 
     }
 
     if (validateInput(copilot) === "Empty" || validateInput(copilot) === "Is a Number") {
-        alert("Co-pilot name is missing or invalid.");
-        copilotStatus.innerHTML = `Co-pilot is missing`;
+        // alert("Co-pilot name is missing or invalid.");
+        copilotStatus.innerHTML = `Please enter a valid name for co-pilot`;
         readyToLaunch = false;
     } else { 
         copilotStatus.innerText = `Co-pilot ${copilot} is ready for launch`;
     }
 
     if (validateInput(fuelLevel) === "Empty" || validateInput(fuelLevel) === "Not a Number") {
-        alert("Fuel Level is missing or invalid.");
+        fuelStatus.innerText = "Fuel Level is missing or not a number";
         readyToLaunch = false;
-    }
-
-    if (validateInput(cargoLevel) === "Empty" || validateInput(cargoLevel) === "Not a Number") {
-        alert("Cargo Mass is missing or invalid.");
-        readyToLaunch = false;
-    }
-
-    // CHECK LAUNCH REQUIREMENTS
-    if (fuelLevel < 10000) {
+    } else if (fuelLevel < 10000) {
         readyToLaunch = false;
         list.style.visibility = "visible";
         fuelStatus.innerText = "Fuel level too low for launch";
         launchStatusDiv.style.color = "red";
         launchStatusDiv.innerHTML = "Shuttle Not Ready for Launch";
+    } else {
+        fuelStatus.innerText = "Fuel level high enough for launch";
     }
-    if (cargoLevel > 10000) {
+
+    if (validateInput(cargoLevel) === "Empty" || validateInput(cargoLevel) === "Not a Number") {
+        cargoStatus.innerText = "Cargo Mass is missing or not a number";
+        readyToLaunch = false;
+    } else if (cargoLevel > 10000) {
         readyToLaunch = false;
         list.style.visibility = "visible";
         cargoStatus.innerText = "Cargo mass too heavy for launch";
         launchStatusDiv.style.color = "red";
         launchStatusDiv.innerHTML = "Shuttle Not Ready for Launch";
+    } else {
+        cargoStatus.innerText = "Cargo mass low enough for launch"
     }
+
+    // CHECK LAUNCH REQUIREMENTS
     if (readyToLaunch) {
         list.style.visibility = "visible";
         launchStatusDiv.style.color = "green";
